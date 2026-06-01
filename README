@@ -1,0 +1,78 @@
+# 🩺 MedScan: AI-Powered Medical Report Analyzer
+
+M**MedScan** is a full-stack web application that helps users understand their medical reports by using **OCR + AI**. It extracts data from lab reports, identifies abnormal values, explains medical terms in simple language, and gives personalized diet & lifestyle suggestions.
+
+![MedScan Dashboard](dashboard.png)
+
+---
+
+## 🚀 Key Features
+
+- **OCR Integration**: Extracts text from medical report images using Tesseract.js
+- **AI Analysis**: Uses **Google Gemini** to analyze reports and generate structured insights
+- **Smart Insights**: Shows test values vs normal ranges with color-coded status
+- **Personalized Recommendations**: Diet, lifestyle, and precautions based on actual report
+- **History Management**: View and search all previous reports
+- **AI Health Assistant**: Chatbot to answer questions about reports
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer        | Technology                          |
+|-------------|-------------------------------------|
+| Frontend    | React + Vite + Tailwind CSS         |
+| Backend     | Node.js + Express                   |
+| Database    | MongoDB                             |
+| OCR         | Tesseract.js                        |
+| AI          | Google Gemini 1.5 Flash             |
+| File Upload | Multer                              |
+
+---
+
+## 📊 Project Visuals
+
+### 1. Intuitive Report Analysis
+View parsed biomarkers, normal benchmark ranges, and diagnostic status in a clean, color-coded dashboard.
+![Parsed Markers](results.png)
+
+### 2. AI-Driven Insights & Directives
+Beyond just reading data, MedScan provides synthesized advice and risk profiling based on your results.
+![AI Recommendations](summary.png)
+
+### 3. Comprehensive History Archive
+Manage your health journey with a clear, date-stamped log of all your analyzed medical dossiers.
+![History Page](History.png)
+
+### 4. Interactive Clinical AI Copilot
+Query your results or ask general health questions in a secure, intuitive chat interface.
+![AI Consultant](AI_copliot.png)
+
+---
+
+## ⚙️ Quick Start
+
+1. **Clone the repository**:
+   ```bash
+   git clone [https://github.com/KanishkaGarg04/MedScan.git](https://github.com/KanishkaGarg04/MedScan.git)
+   cd MedScan
+Setup:
+
+Create a .env file in the backend/ directory.
+
+Add your MONGO_URI and GEMINI_API_KEY.
+
+Install & Run:
+
+```bash
+# Backend
+cd backend
+npm install
+npm start
+
+# Frontend (new terminal)
+cd frontend
+npm install
+npm run dev
+
+
