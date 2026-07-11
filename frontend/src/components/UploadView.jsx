@@ -19,9 +19,18 @@ export default function UploadView({ onUploadComplete }) {
     formData.append('file', file);
 
     try {
-      const res = await axios.post('http://localhost:5000/api/reports/analyze', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
+      const token = localStorage.getItem("token");
+
+    const res = await axios.post(
+     "http://localhost:5000/api/reports/analyze",
+       formData,
+     {
+     headers: {
+      Authorization: token,
+      "Content-Type": "multipart/form-data"
+       }
+      }
+    );
 
       setResult(res.data.report);
       

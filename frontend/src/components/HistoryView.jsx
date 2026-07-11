@@ -177,7 +177,7 @@ export default function HistoryView({ reports = [], onConsultReport }) {
               {/* High-Intelligence Action Matrix Footer Node */}
               <div className="mt-6 pt-5 border-t border-slate-100 flex justify-end">
                 <button
-                  onClick={() => onConsultReport && onConsultReport(report)}
+                  onClick={() => onConsultReport && onConsultReport(report) && handleChat(report)}
                   className="flex items-center gap-2 px-5 py-3 bg-blue-50 hover:bg-blue-100/70 text-blue-600 rounded-xl text-[13.5px] font-bold tracking-tight transition-all active:scale-[0.99] border border-blue-100/40"
                 >
                   <Bot size={16} strokeWidth={2.5} className="text-blue-500 animate-pulse" />
