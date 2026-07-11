@@ -138,8 +138,10 @@ exports.analyzeReport = async (req, res) => {
       }
     });
 
+    console.log("Saving report...");
+    console.log(reportDoc);
     await reportDoc.save();
-    
+    console.log("Report saved successfully!");
     // Clean up local temp disk storage
     if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
 
