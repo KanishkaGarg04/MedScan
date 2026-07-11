@@ -1,6 +1,39 @@
 const Report = require('../models/Reports'); // Match your plural filename exactly
 const fs = require('fs');
 
+exports.uploadProfilePicture = async (req,res)=>{
+
+    try{
+
+        const user = await User.findById(req.user.id);
+
+        if(!user){
+
+            return res.status(404).json({
+                message:"User not found"
+            });
+
+        }
+
+        user.profilePic=`http://localhost:5000/uploads/${req.file.filename}`;
+
+        await user.save();
+
+        res.json({
+            message:"Profile picture updated",
+            profilePic:user.profilePic
+        });
+
+    }catch(error){
+
+        res.status(500).json({
+            message:error.message
+        });
+
+    }
+
+}
+
 // Convert local multipart upload files into standard Gemini API-ready inline data blocks
 function fileToGenerativePart(filePath, mimeType) {
   return {
@@ -39,9 +72,12 @@ async function callGeminiVisionModel(modelName, apiKey, prompt, imagePart) {
 
 exports.analyzeReport = async (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ success: false, message: "No file uploaded" });
-    }
+    if (!req.user) {
+  return res.status(401).json({
+    success: false,
+    message: "Unauthorized"
+  });
+}
 
     const filePath = req.file.path;
     const mimeType = req.file.mimetype; 
@@ -125,6 +161,7 @@ exports.analyzeReport = async (req, res) => {
       reportType: parsedInsights.reportType || "General Medical Report",
       extractedText: "Processed via Cloud Vision Engine", 
       status: parsedInsights.status || "Normal",
+      user: req.user.id,
       insights: {
         overallHealth: parsedInsights.overallHealth || 70,
         summary: parsedInsights.summary || "Analysis successfully generated.",
@@ -158,7 +195,7 @@ exports.analyzeReport = async (req, res) => {
 
 exports.getHistory = async (req, res) => {
   try {
-    const reports = await Report.find().sort({ createdAt: -1 });
+    const reports = await Report.find({user: req.user.id}).sort({ createdAt: -1 });
     return res.json({ success: true, data: reports });
   } catch (err) {
     return res.status(500).json({ success: false, message: err.message });
