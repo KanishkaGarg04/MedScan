@@ -1,209 +1,403 @@
-import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
-import { Send, Bot, User, Sparkles, FileText, X, ShieldAlert, ArrowRight } from 'lucide-react';
+import React, { useState, useEffect, useRef } from "react";
+import axios from "axios";
+import {
+  Send,
+  Bot,
+  User,
+  Sparkles,
+  FileText,
+  X,
+  ShieldAlert,
+  ArrowRight,
+} from "lucide-react";
 
-export default function ChatbotView({ injectedReportContext, onClearContext }) {
+// Backend URL (change only in .env when deploying)
+const API_URL =
+  import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+export default function ChatbotView({
+  injectedReportContext,
+  onClearContext,
+}) {
+  // Initial chatbot greeting
   const [messages, setMessages] = useState([
-    { 
-      sender: 'ai', 
-      text: "Hello! I am your MedScan Clinical AI Copilot. You can ask me to explain medical terms, interpret lab variance ranges, or suggest dietary changes based on your files. How can I help you today?" 
-    }
+    {
+      id: Date.now(),
+      sender: "ai",
+      text: "Hello! I am your MedScan Clinical AI Copilot. You can ask me to explain medical terms, interpret lab reports, understand abnormal values, or suggest lifestyle improvements based on your medical reports. How can I help you today?",
+    },
   ]);
-  const [input, setInput] = useState('');
+
+  const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
   const messagesEndRef = useRef(null);
 
-  // Auto-scroll timeline window to ensure visibility of fresh message feeds
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
+  // Auto-scroll whenever messages update
   useEffect(() => {
-    scrollToBottom();
+    messagesEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+    });
   }, [messages, isLoading]);
 
-  // If a report context was injected from another view, process an automated systemic prompt introduction
+  // Prevent duplicate report notifications
+  const lastContextRef = useRef(null);
+
   useEffect(() => {
-    if (injectedReportContext) {
-      setMessages(prev => [
-        ...prev,
-        {
-          sender: 'ai',
-          text: `⚠️ CONTEXT LOCKED: I have pulled up your analysis records for "${injectedReportContext.reportType || 'Medical Dossier'}" (${injectedReportContext.fileName}). I am ready to decode any specific data points, abnormal flags, or recommendations from this document. What would you like to clarify?`,
-          isSystemNotification: true
-        }
-      ]);
-    }
+    if (!injectedReportContext) return;
+
+    if (
+      lastContextRef.current === injectedReportContext.fileName
+    )
+      return;
+
+    lastContextRef.current = injectedReportContext.fileName;
+
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: Date.now(),
+        sender: "ai",
+        isSystemNotification: true,
+        text: `⚠️ CONTEXT LOCKED
+
+I have loaded your report:
+
+📄 ${injectedReportContext.fileName}
+
+Type:
+${injectedReportContext.reportType || "Medical Report"}
+
+You can now ask me questions specifically about this report.`,
+      },
+    ]);
   }, [injectedReportContext]);
 
-  const handleSendMessage = async (customText = null) => {
-    const textToSend = customText || input;
-    if (!textToSend.trim() || isLoading) return;
+  // Suggestions shown below chat
+  const contextSuggestions = injectedReportContext
+    ? [
+        "Explain the abnormal findings",
+        "What foods should I avoid?",
+        "Should I consult a doctor immediately?",
+      ]
+    : [
+        "What is a normal Hemoglobin level?",
+        "Explain CBC report",
+        "Difference between HDL and LDL",
+      ];
+      const handleSendMessage = async (customText = null) => {
+         console.log("Button clicked");
+  const textToSend = customText || input;
 
-    // Push primary patient message item onto state pipeline
-    const updatedMessages = [...messages, { sender: 'user', text: textToSend }];
-    setMessages(updatedMessages);
-    if (!customText) setInput('');
-    setIsLoading(true);
+  // Prevent empty messages or duplicate requests
+  if (!textToSend.trim() || isLoading) return;
 
-    try {
-      // Build a contextual prompt block including background report details if present
-      let payloadPrompt = textToSend;
-      if (injectedReportContext) {
-        payloadPrompt = `[Context Mode - Report Type: ${injectedReportContext.reportType}, Status: ${injectedReportContext.status}, Raw Text Extract: ${injectedReportContext.extractedText || ''}]\n\nUser Question: ${textToSend}`;
-      }
-
-      // Hit your active local Node backend LLM bridge route
-      const response = await axios.post('http://localhost:5000/api/chat', {
-        message: payloadPrompt,
-        history: updatedMessages.filter(m => !m.isSystemNotification) // Avoid polluting chat streams with styling flags
-      });
-
-      setMessages(prev => [...prev, { sender: 'ai', text: response.data.reply || response.data.data }]);
-    } catch (err) {
-      console.error("AI Node interaction runtime fault:", err);
-      setMessages(prev => [
-        ...prev, 
-        { sender: 'ai', text: "Forgive me, my neural network links timed out trying to structure that response. Please verify your backend server execution stream." }
-      ]);
-    } finally {
-      setIsLoading(false);
-    }
+  // User message
+  const userMessage = {
+    id: Date.now(),
+    sender: "user",
+    text: textToSend,
   };
 
-  // Static predictive suggestion pathways
-  const contextSuggestions = injectedReportContext ? [
-    "Explain the anomalous findings in plain English",
-    "What specific lifestyle variables should I avoid?",
-    "Does this report necessitate immediate physician follow-up?"
-  ] : [
-    "What does a normal Hemoglobin metric look like?",
-    "How should I structure a standard metabolic panel review?",
-    "Explain the difference between microcytic and macrocytic traits"
-  ];
+  const updatedMessages = [...messages, userMessage];
 
+  setMessages(updatedMessages);
+
+  if (!customText) {
+    setInput("");
+  }
+
+  setIsLoading(true);
+
+  try {
+    // Build prompt
+    let payloadPrompt = textToSend;
+
+    if (injectedReportContext) {
+      payloadPrompt = `
+Medical Report Context
+
+Report Type:
+${injectedReportContext.reportType || "Medical Report"}
+
+Status:
+${injectedReportContext.status || "Unknown"}
+
+Extracted Report:
+${injectedReportContext.extractedText || "No report text available"}
+
+User Question:
+${textToSend}
+`;
+    }
+
+    // Send only last 10 messages
+    const history = updatedMessages
+      .filter((msg) => !msg.isSystemNotification)
+      .slice(-10)
+      .map((msg) => ({
+        role: msg.sender,
+        text: msg.text,
+      }));
+
+    const response = await axios.post(
+      `${API_URL}/api/chat`,
+      {
+        message: payloadPrompt,
+        history,
+      },
+      {
+        timeout: 20000,
+      }
+    );
+
+    // Handle different backend response formats
+    const aiReply =
+      response.data?.reply ||
+      response.data?.message ||
+      response.data?.data ||
+      "Sorry, I couldn't generate a response.";
+
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: Date.now() + 1,
+        sender: "ai",
+        text: aiReply,
+      },
+    ]);
+  } catch (err) {
+    console.error("Chatbot Error:", err);
+
+    let errorMessage =
+      "Something went wrong while contacting the AI service.";
+
+    if (err.response) {
+      switch (err.response.status) {
+        case 400:
+          errorMessage =
+            "Invalid request sent to the server.";
+          break;
+
+        case 401:
+          errorMessage =
+            "Authentication failed. Please verify your API key.";
+          break;
+
+        case 403:
+          errorMessage =
+            "Access denied by the AI service.";
+          break;
+
+        case 404:
+          errorMessage =
+            "Chat service endpoint not found.";
+          break;
+
+        case 429:
+          errorMessage =
+            "AI service quota exceeded. Please try again later.";
+          break;
+
+        case 500:
+          errorMessage =
+            "Internal server error. Please try again.";
+          break;
+
+        default:
+          errorMessage =
+            err.response.data?.message ||
+            "Unexpected server error.";
+      }
+    } else if (err.request) {
+      errorMessage =
+        "Unable to reach the backend server. Please ensure it is running.";
+    } else {
+      errorMessage = err.message;
+    }
+
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: Date.now() + 2,
+        sender: "ai",
+        text: errorMessage,
+      },
+    ]);
+  } finally {
+    setIsLoading(false);
+  }
+};
   return (
     <div className="max-w-4xl mx-auto flex flex-col h-[calc(100vh-140px)] bg-white border border-slate-100 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.01)] overflow-hidden">
-      
-      {/* Workspace Header Module */}
+
+      {/* Header */}
       <div className="px-6 py-4 bg-white border-b border-slate-100 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-gradient-to-r from-teal-500 to-blue-600 rounded-xl flex items-center justify-center text-white">
             <Sparkles size={18} strokeWidth={2.5} />
           </div>
+
           <div>
-            <h3 className="text-lg font-bold text-slate-900 tracking-tight leading-none">Clinical AI Copilot</h3>
-            <p className="text-xs font-semibold text-slate-400 mt-1">Real-time Patient Diagnostic Support Node</p>
+            <h3 className="text-lg font-bold text-slate-900">
+              Clinical AI Copilot
+            </h3>
+            <p className="text-xs text-slate-400">
+              AI Powered Medical Assistant
+            </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 text-xs font-bold text-slate-400 border border-slate-100 px-3 py-1.5 rounded-lg bg-slate-50/50">
+        <div className="flex items-center gap-2 text-xs font-semibold text-slate-500 border border-slate-200 px-3 py-2 rounded-lg bg-slate-50">
           <ShieldAlert size={14} className="text-teal-500" />
-          <span>HIPAA COMPLIANT SECURE TUNNEL</span>
+          HIPAA COMPLIANT
         </div>
       </div>
 
-      {/* Dynamic Linked Context Banner */}
+      {/* Report Context */}
       {injectedReportContext && (
-        <div className="bg-gradient-to-r from-teal-50/60 to-blue-50/60 border-b border-blue-100/40 px-6 py-3 flex items-center justify-between text-sm shrink-0 animate-fade-in">
-          <div className="flex items-center gap-2.5 text-blue-700 font-semibold truncate">
-            <FileText size={16} className="text-teal-600 shrink-0" />
-            <span className="truncate">Currently linked to: <b className="font-bold">{injectedReportContext.reportType || 'Diagnostics File'}</b> ({injectedReportContext.fileName})</span>
+        <div className="bg-gradient-to-r from-teal-50 to-blue-50 border-b border-blue-100 px-6 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-2 text-sm text-blue-700 font-medium truncate">
+            <FileText size={16} />
+            <span className="truncate">
+              Report :
+              <b className="ml-1">
+                {injectedReportContext.fileName}
+              </b>
+            </span>
           </div>
-          <button 
+
+          <button
+            type="button"
             onClick={onClearContext}
-            className="p-1 text-slate-400 hover:text-rose-500 rounded-md transition-colors shrink-0"
-            title="Disconnect context model"
+            className="text-slate-400 hover:text-red-500 transition"
           >
-            <X size={16} />
+            <X size={18} />
           </button>
         </div>
       )}
 
-      {/* Messages Render Timeline Grid */}
-      <div className="flex-1 overflow-y-auto p-6 bg-slate-50/30 space-y-6">
-        {messages.map((msg, index) => {
+      {/* Chat Messages */}
+      <div className="flex-1 overflow-y-auto p-6 bg-slate-50 space-y-5">
+
+        {messages.map((msg) => {
+
           if (msg.isSystemNotification) {
             return (
-              <div key={index} className="flex justify-center my-2">
-                <div className="bg-blue-50 border border-blue-100 text-blue-800 text-xs font-medium px-4 py-3 rounded-xl max-w-xl text-center leading-relaxed">
-                  {msg.text}
-                </div>
+              <div
+                key={msg.id}
+                className="bg-blue-50 border border-blue-100 text-blue-700 rounded-xl p-4 text-sm"
+              >
+                {msg.text}
               </div>
             );
           }
 
-          const isAI = msg.sender === 'ai';
+          const isAI = msg.sender === "ai";
+
           return (
-            <div key={index} className={`flex gap-4 max-w-3xl ${isAI ? 'mr-auto' : 'ml-auto flex-row-reverse'}`}>
-              <div className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-sm shrink-0 select-none shadow-sm ${
-                isAI ? 'bg-gradient-to-r from-teal-500 to-blue-600 text-white' : 'bg-slate-200 text-slate-700'
-              }`}>
-                {isAI ? <Bot size={16} /> : <User size={16} />}
+            <div
+              key={msg.id}
+              className={`flex gap-3 ${
+                isAI ? "justify-start" : "justify-end"
+              }`}
+            >
+              {isAI && (
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-teal-500 to-blue-600 flex items-center justify-center text-white">
+                  <Bot size={16} />
+                </div>
+              )}
+
+              <div
+                className={`max-w-[75%] rounded-2xl px-4 py-3 text-sm whitespace-pre-line ${
+                  isAI
+                    ? "bg-white border border-slate-200 text-slate-800"
+                    : "bg-blue-600 text-white"
+                }`}
+              >
+                {msg.text}
               </div>
-              
-              <div className={`space-y-1 p-4 rounded-2xl text-[14.5px] leading-relaxed font-medium ${
-                isAI 
-                  ? 'bg-white text-slate-800 border border-slate-100/80 shadow-[0_2px_8px_rgba(0,0,0,0.005)]' 
-                  : 'bg-blue-600 text-white'
-              }`}>
-                <p className="whitespace-pre-line">{msg.text}</p>
-              </div>
+
+              {!isAI && (
+                <div className="w-10 h-10 rounded-xl bg-slate-200 flex items-center justify-center">
+                  <User size={16} />
+                </div>
+              )}
             </div>
           );
         })}
 
-        {/* Streaming State Buffer Indicator */}
         {isLoading && (
-          <div className="flex gap-4 mr-auto animate-pulse">
-            <div className="w-9 h-9 rounded-xl bg-slate-200 text-slate-400 flex items-center justify-center text-sm">
+          <div className="flex gap-3">
+
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-teal-500 to-blue-600 flex items-center justify-center text-white">
               <Bot size={16} />
             </div>
-            <div className="bg-slate-100 border border-slate-200/50 p-4 rounded-2xl text-slate-400 text-sm font-semibold tracking-wide">
-              Thinking, structuring cross-references...
+
+            <div className="bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-500 animate-pulse">
+              Generating medical insights...
             </div>
+
           </div>
         )}
+
         <div ref={messagesEndRef} />
+
       </div>
 
-      {/* Input Action Panel Execution Area */}
-      <div className="p-4 bg-white border-t border-slate-100 shrink-0 space-y-3.5">
-        
-        {/* Dynamic Single-Click Question Chips */}
-        <div className="flex flex-wrap gap-2">
-          {contextSuggestions.map((suggestion, i) => (
-            <button
-              key={i}
-              onClick={() => handleSendMessage(suggestion)}
-              disabled={isLoading}
-              className="text-xs font-bold text-slate-500 bg-slate-50 hover:bg-blue-50 hover:text-blue-600 px-3.5 py-2 rounded-xl border border-slate-200/60 transition-all flex items-center gap-1 cursor-pointer disabled:opacity-50"
-            >
-              <span>{suggestion}</span>
-              <ArrowRight size={12} className="opacity-60" />
-            </button>
-          ))}
-        </div>
+      {/* Suggestions */}
 
-        {/* Main Text Input Group */}
-        <div className="flex gap-3">
-          <input
-            type="text"
-            disabled={isLoading}
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
-            placeholder={injectedReportContext ? "Ask anything about this specific report parameters..." : "Query generic clinical terms, metric charts, guidelines..."}
-            className="flex-1 bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-3.5 text-sm font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white transition-all disabled:opacity-60"
-          />
+      <div className="px-4 pt-3 flex flex-wrap gap-2">
+
+        {contextSuggestions.map((suggestion) => (
           <button
-            onClick={() => handleSendMessage()}
-            disabled={!input.trim() || isLoading}
-            className="bg-blue-600 hover:bg-blue-700 text-white p-3.5 rounded-xl font-bold shadow-md shadow-blue-500/10 transition-all active:scale-[0.98] disabled:opacity-40 disabled:scale-100 shrink-0 flex items-center justify-center"
+            key={suggestion}
+            type="button"
+            disabled={isLoading}
+            onClick={() => handleSendMessage(suggestion)}
+            className="text-xs bg-slate-100 hover:bg-blue-50 hover:text-blue-600 px-3 py-2 rounded-xl border transition"
           >
-            <Send size={18} />
+            <div className="flex items-center gap-1">
+              {suggestion}
+              <ArrowRight size={12} />
+            </div>
           </button>
-        </div>
+        ))}
+
+      </div>
+
+      {/* Input */}
+
+      <div className="p-4 border-t border-slate-100 flex gap-3 bg-white">
+
+        <input
+          type="text"
+          value={input}
+          autoComplete="off"
+          spellCheck={false}
+          disabled={isLoading}
+          aria-label="Chat message"
+          placeholder="Ask your medical question..."
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              handleSendMessage();
+            }
+          }}
+          className="flex-1 border border-slate-200 rounded-xl px-4 py-3 outline-none focus:border-blue-500"
+        />
+
+        <button
+          type="button"
+          aria-label="Send Message"
+          disabled={!input.trim() || isLoading}
+           onClick={() => handleSendMessage()}
+          className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white rounded-xl px-5 flex items-center justify-center transition"
+        >
+          <Send size={18} />
+        </button>
+
       </div>
 
     </div>
