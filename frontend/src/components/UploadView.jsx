@@ -22,7 +22,7 @@ export default function UploadView({ onUploadComplete }) {
       const token = localStorage.getItem("token");
 
     const res = await axios.post(
-     "http://localhost:5000/api/reports/analyze",
+     `${import.meta.env.VITE_API_URL}/api/reports/analyze`,
        formData,
      {
      headers: {

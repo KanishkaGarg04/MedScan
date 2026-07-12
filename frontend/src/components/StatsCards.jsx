@@ -54,16 +54,23 @@ export default function StatsCards({ reports }) {
 
         return (
           
-          <motion.div
-  initial={{ opacity: 0, y: 20 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: 0.4 }}
-  whileHover={{
-    y: -5,
-    scale: 1.02,
-  }}
-  className="bg-white dark:bg-slate-800 rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-700"
->
+          <div
+            key={item.title}
+           className="
+          bg-white
+          dark:bg-slate-800
+          rounded-xl
+          p-4
+          border
+          border-slate-200
+          dark:border-slate-700
+          shadow-sm
+          hover:shadow-md
+          transition-all
+          duration-300
+          hover:-translate-y-1
+          "
+          >
             <div className="flex justify-between items-start">
               <div>
                 <p className="text-sm text-slate-500 dark:text-slate-400">

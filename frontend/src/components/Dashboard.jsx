@@ -41,7 +41,7 @@ export default function Dashboard() {
       const token = localStorage.getItem("token");
 
       const res = await axios.get(
-        "http://localhost:5000/api/reports/history",
+        `${import.meta.env.VITE_API_URL}/api/reports/history`,
         {
           headers: {
             Authorization: token,
