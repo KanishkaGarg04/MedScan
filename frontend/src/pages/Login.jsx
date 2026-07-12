@@ -37,7 +37,7 @@ export default function Login() {
         {/* Left Side: Branding */}
         <div className="hidden lg:block space-y-8">
           <h1 className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-500 to-blue-600">MedScan</h1>
-          <h2 className="text-4xl font-semibold text-slate-800 leading-tight">AI-Powered Medical Report Analyzer</h2>
+          <h2 className="text-4xl font-semibold text-slate-800 dark:text-white leading-tight">AI-Powered Medical Report Analyzer</h2>
           <p className="text-slate-600 text-lg">Analyze complex medical reports instantly with clinical-grade AI precision.</p>
           
           <div className="grid grid-cols-3 gap-4">

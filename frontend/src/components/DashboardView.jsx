@@ -213,7 +213,7 @@ export default function DashboardView({ reports = [] }) {
               {insights.dietarySuggestions && insights.dietarySuggestions.length > 0 ? (
                 insights.dietarySuggestions.map((item, idx) => (
                   <div key={idx} className="bg-slate-50/50 p-3.5 rounded-xl border border-slate-100 dark:border-slate-700/40 text-[13px] space-y-0.5">
-                    <span className="font-bold text-slate-800 block">{item.split(':')[0]}</span>
+                    <span className="font-bold text-slate-800 dark:text-white block">{item.split(':')[0]}</span>
                     <span className="text-slate-500 dark:text-slate-300 font-normal block leading-normal">{item.split(':')[1] || "Incorporate cleanly into morning routines."}</span>
                   </div>
                 ))
@@ -232,7 +232,7 @@ export default function DashboardView({ reports = [] }) {
               {insights.whatToAvoid && insights.whatToAvoid.length > 0 ? (
                 insights.whatToAvoid.map((item, idx) => (
                   <div key={idx} className="bg-slate-50/50 p-3.5 rounded-xl border border-slate-100 dark:border-slate-700/40 text-[13px] space-y-0.5">
-                    <span className="font-bold text-slate-800 block">{item.split(':')[0]}</span>
+                    <span className="font-bold text-slate-800 dark:text-white block">{item.split(':')[0]}</span>
                     <span className="text-slate-500 dark:text-slate-300 font-normal block leading-normal">{item.split(':')[1] || "Avoid or restrict from standard profiles."}</span>
                   </div>
                 ))
@@ -251,7 +251,7 @@ export default function DashboardView({ reports = [] }) {
               {insights.lifestyleChanges && insights.lifestyleChanges.length > 0 ? (
                 insights.lifestyleChanges.map((item, idx) => (
                   <div key={idx} className="bg-slate-50/50 p-3.5 rounded-xl border border-slate-100 dark:border-slate-700/40 text-[13px] space-y-0.5">
-                    <span className="font-bold text-slate-800 block">{item.split(':')[0]}</span>
+                    <span className="font-bold text-slate-800 dark:text-white block">{item.split(':')[0]}</span>
                     <span className="text-slate-500 dark:text-slate-300 font-normal block leading-normal">{item.split(':')[1] || "Adopt to protect metabolic baselines."}</span>
                   </div>
                 ))
@@ -278,7 +278,7 @@ export default function DashboardView({ reports = [] }) {
                     <span>Compound 0{idx + 1}</span>
                     <span className="text-blue-600 font-bold">{pill.name}</span>
                   </div>
-                  <div className="text-base font-bold text-slate-800 tracking-tight">{pill.dose}</div>
+                  <div className="text-base font-bold text-slate-800 dark:text-white tracking-tight">{pill.dose}</div>
                   <div className="text-xs text-slate-500 dark:text-slate-300 font-normal leading-tight mt-0.5">{pill.instruction}</div>
                 </div>
               ))

@@ -285,6 +285,7 @@ return (
           type="button"
           onClick={onClearContext}
           className="text-slate-400 hover:text-red-500 transition"
+          
         >
           <X size={18} />
         </button>
@@ -330,7 +331,7 @@ return (
             <div
               className={`max-w-[75%] rounded-2xl px-4 py-3 text-sm whitespace-pre-line ${
                 isAI
-                  ? "bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 text-slate-800"
+                  ? "bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 text-slate-800 dark:text-white"
                   : "bg-blue-600 text-white"
               }`}
             >

@@ -63,7 +63,7 @@ export default function UploadView({ onUploadComplete }) {
         {loading ? (
           <div className="py-8">
             <Loader2 className="w-16 h-16 animate-spin mx-auto text-blue-600 mb-4" />
-            <h3 className="text-xl font-bold text-slate-800">Reading with AI Processing Engines...</h3>
+            <h3 className="text-xl font-bold text-slate-800 dark:text-white">Reading with AI Processing Engines...</h3>
             <p className="text-xs text-slate-400 mt-1">Running OCR text extraction and building metric profiles.</p>
           </div>
         ) : (
@@ -71,7 +71,7 @@ export default function UploadView({ onUploadComplete }) {
             <div className="w-20 h-20 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <UploadCloud size={36} />
             </div>
-            <h3 className="text-xl font-bold text-slate-800 mb-1">Drop your medical report here</h3>
+            <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-1">Drop your medical report here</h3>
             <p className="text-sm text-slate-400 mb-6">Supports image files (JPG, PNG)</p>
             
             <input type="file" id="fileInput" className="hidden" accept="image/*" onChange={(e) => processUpload(e.target.files[0])} />
@@ -95,7 +95,7 @@ export default function UploadView({ onUploadComplete }) {
           <div className="flex justify-between items-start mb-8 pb-6 border-b border-slate-100 dark:border-slate-700">
             <div>
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Analysis Engine Verified Log</span>
-              <h2 className="text-2xl font-black text-slate-800 mt-1">{result.reportType || "General Medical Report"}</h2>
+              <h2 className="text-2xl font-black text-slate-800 dark:text-white mt-1">{result.reportType || "General Medical Report"}</h2>
               <p className="text-xs text-slate-400 font-medium mt-1">Source File: {result.fileName}</p>
             </div>
             <div className={`px-4 py-1.5 rounded-xl text-xs font-black tracking-wide uppercase ${result.status === 'Abnormal' ? 'bg-rose-50 text-rose-600 border border-rose-100' : 'bg-emerald-50 text-emerald-600 border border-emerald-100'}`}>
@@ -105,7 +105,7 @@ export default function UploadView({ onUploadComplete }) {
 
           {/* Parameters Table Grid */}
           <div className="mb-8">
-            <h3 className="text-sm font-extrabold text-slate-800 flex items-center gap-2 mb-4">
+            <h3 className="text-sm font-extrabold text-slate-800 dark:text-white flex items-center gap-2 mb-4">
               <ListFilter size={16} className="text-blue-600" /> Parsed Clinical Markers
             </h3>
             <div className="border border-slate-100 dark:border-slate-700 rounded-2xl overflow-hidden bg-white dark:bg-slate-800">
@@ -122,7 +122,7 @@ export default function UploadView({ onUploadComplete }) {
                   {result.insights?.parameters && result.insights.parameters.length > 0 ? (
                     result.insights.parameters.map((p, i) => (
                       <tr key={i} className="hover:bg-slate-50/50 transition-colors">
-                        <td className="p-4 font-bold text-slate-800">{p.testName}</td>
+                        <td className="p-4 font-bold text-slate-800 dark:text-white">{p.testName}</td>
                         <td className="p-4 font-semibold">{p.value} {p.unit}</td>
                         <td className="p-4 text-slate-400 font-normal">{p.normalRange}</td>
                         <td className="p-4 text-center">

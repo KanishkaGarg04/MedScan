@@ -338,7 +338,7 @@ export default function HistoryView({
               />
             </div>
 
-            <h3 className="text-lg font-bold text-slate-800">
+            <h3 className="text-lg font-bold text-slate-800 dark:text-white">
               No Reports Found
             </h3>
 

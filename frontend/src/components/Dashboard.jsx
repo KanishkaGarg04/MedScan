@@ -9,7 +9,10 @@ import {
   Moon,
   Sun,
 } from "lucide-react";
-
+import AIHealthSummary from "./AIHealthSummary";
+import RecentActivity from "./RecentActivity";
+import AnalyticsCharts from "./AnalyticsCharts";
+import StatsCards from "./StatsCards";
 import DashboardView from "./DashboardView";
 import UploadView from "./UploadView";
 import HistoryView from "./HistoryView";
@@ -216,12 +219,26 @@ export default function Dashboard() {
 
     {/* Main Content */}
 
-    <main className="flex-1 ml-72 p-10">
+    <main className="flex-1 ml-72 p-10 min-h-screen overflow-y-auto transition-colors duration-300">
 
       {activeTab === "home" && (
         <div className="space-y-10">
           <UploadView onUploadComplete={fetchReports} />
-          <DashboardView reports={reports} />
+          <div className="grid lg:grid-cols-2 gap-5 mt-6">
+          <AIHealthSummary reports={reports} />
+          <RecentActivity reports={reports} />
+        </div>
+          <div className="space-y-5">
+            <StatsCards reports={reports} />
+            <div className="space-y-5">
+            <div>
+            </div>
+
+            <AnalyticsCharts reports={reports} />
+          </div>
+            <DashboardView reports={reports} />
+          </div>
+          
         </div>
       )}
 

@@ -159,7 +159,7 @@ localStorage.setItem("user", JSON.stringify(updatedUser));
                 <span>Name</span>
               </div>
 
-              <span className="font-semibold text-slate-800">
+              <span className="font-semibold text-slate-800 dark:text-white">
                 {user?.name}
               </span>
             </div>
@@ -170,7 +170,7 @@ localStorage.setItem("user", JSON.stringify(updatedUser));
                 <span>Email</span>
               </div>
 
-              <span className="font-semibold text-slate-800 break-all">
+              <span className="font-semibold text-slate-800 dark:text-white break-all">
                 {user?.email}
               </span>
             </div>
@@ -181,7 +181,7 @@ localStorage.setItem("user", JSON.stringify(updatedUser));
                 <span>Member Since</span>
               </div>
 
-              <span className="font-semibold text-slate-800">
+              <span className="font-semibold text-slate-800 dark:text-white">
                 {joinedDate}
               </span>
             </div>
