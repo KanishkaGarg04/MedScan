@@ -21,7 +21,7 @@ import ProfileView from "./ProfileView";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("home");
-
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(
     () => localStorage.getItem("theme") === "dark"
   );
@@ -103,7 +103,19 @@ export default function Dashboard() {
   <div className="flex min-h-screen bg-[#f7fafd] dark:bg-slate-900 text-slate-700 dark:text-white">
 
     {/* Sidebar */}
-    <aside className="w-72 bg-white dark:bg-slate-800 border-r border-slate-100 dark:border-slate-700 h-screen fixed flex flex-col justify-between p-6">
+    <aside
+className={`
+fixed z-50 top-0 left-0 h-screen w-72
+bg-white dark:bg-slate-800
+border-r border-slate-100 dark:border-slate-700
+flex flex-col justify-between p-6
+transition-transform duration-300
+
+${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+
+md:translate-x-0
+`}
+>
 
       <div>
 
@@ -142,7 +154,7 @@ export default function Dashboard() {
             return (
               <button
                 key={id}
-                onClick={() => setActiveTab(id)}
+                onClick={() => {setActiveTab(id); setSidebarOpen(false);}}
                 className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl transition
                 ${
                   active
@@ -220,11 +232,16 @@ export default function Dashboard() {
     {/* Main Content */}
 
     <main className="flex-1 ml-72 p-10 min-h-screen overflow-y-auto transition-colors duration-300">
-
+          <button
+  onClick={() => setSidebarOpen(!sidebarOpen)}
+  className="md:hidden mb-4 p-3 rounded-xl bg-white dark:bg-slate-800 shadow"
+>
+  ☰
+</button>
       {activeTab === "home" && (
         <div className="space-y-10">
           <UploadView onUploadComplete={fetchReports} />
-          <div className="grid lg:grid-cols-2 gap-5 mt-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-6">
           <AIHealthSummary reports={reports} />
           <RecentActivity reports={reports} />
         </div>

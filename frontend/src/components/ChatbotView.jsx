@@ -232,7 +232,7 @@ ${textToSend}
   }
 };
 return (
-  <div className="max-w-4xl mx-auto flex flex-col h-[calc(100vh-140px)] bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.01)] overflow-hidden">
+  <div className="w-full max-w-4xl mx-auto flex flex-col h-[calc(100vh-140px)] bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.01)] overflow-hidden">
 
     {/* Header */}
     <div className="px-6 py-4 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between shrink-0">
