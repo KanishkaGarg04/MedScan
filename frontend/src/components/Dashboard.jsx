@@ -228,13 +228,30 @@ md:translate-x-0
       </div>
 
     </aside>
-
+           {sidebarOpen && (
+  <div
+    onClick={() => setSidebarOpen(false)}
+    className="fixed inset-0 bg-black/40 z-40 md:hidden"
+  />
+)}
     {/* Main Content */}
 
-    <main className="flex-1 ml-72 p-10 min-h-screen overflow-y-auto transition-colors duration-300">
+    <main className="flex-1 w-full md:ml-72 p-4 md:p-10 min-h-screen overflow-y-auto transition-colors duration-300">
           <button
-  onClick={() => setSidebarOpen(!sidebarOpen)}
-  className="md:hidden mb-4 p-3 rounded-xl bg-white dark:bg-slate-800 shadow"
+  onClick={() => setSidebarOpen(true)}
+  className="
+  md:hidden
+  mb-4
+  w-10
+  h-10
+  rounded-xl
+  bg-white
+  dark:bg-slate-800
+  shadow
+  flex
+  items-center
+  justify-center
+  "
 >
   ☰
 </button>

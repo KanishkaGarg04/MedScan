@@ -70,7 +70,7 @@ export default function AnalyticsCharts({ reports }) {
   }
 
   return (
-    <div className="space-y-6 mt-6">
+    <div className="space-y-6 mt-6 w-full overflow-hidden">
 
       <div>
         <h2 className="text-2xl font-bold text-slate-800 dark:text-white">
@@ -96,7 +96,7 @@ export default function AnalyticsCharts({ reports }) {
             Healthy vs abnormal reports
           </p>
 
-          <ResponsiveContainer width="100%" height={250}>
+          <ResponsiveContainer width="100%" height={250} minWidth={250}>
 
             <PieChart>
 
@@ -110,9 +110,7 @@ export default function AnalyticsCharts({ reports }) {
               animationBegin={0}
               animationDuration={1200}
               animationEasing="ease-out"
-              label={({ percent }) =>
-                `${(percent * 100).toFixed(0)}%`
-              }
+              label={false}
             >
                 {pieData.map((entry, index) => (
                   <Cell
@@ -148,7 +146,7 @@ export default function AnalyticsCharts({ reports }) {
             Reports uploaded over time
           </p>
 
-          <ResponsiveContainer width="100%" height={250}>
+          <ResponsiveContainer width="100%" height={250} minWidth={250}>
 
             <LineChart data={lineData}>
 
@@ -214,9 +212,13 @@ export default function AnalyticsCharts({ reports }) {
   stroke="#e5e7eb"
 />
 
-            <XAxis
-  dataKey="type"
-  tick={{ fill: "#64748b", fontSize: 12 }}
+           <XAxis
+ dataKey="type"
+ interval={0}
+ angle={-25}
+ textAnchor="end"
+ height={80}
+ tick={{ fill:"#64748b", fontSize:11 }}
 />
 
             <YAxis
