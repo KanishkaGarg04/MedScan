@@ -55,11 +55,11 @@ export default function UploadView({ onUploadComplete }) {
 
   return (
     <div className="max-w-5xl mx-auto pb-16 font-sans antialiased text-slate-700 tracking-tight">
-      <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight">Upload Medical Report</h1>
-      <p className="text-slate-500 mt-1">Get detailed AI analysis with parsed biological parameters, normal ranges, and suggestions</p>
+      <h1 className="text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">Upload Medical Report</h1>
+      <p className="text-slate-500 dark:text-slate-300 mt-1">Get detailed AI analysis with parsed biological parameters, normal ranges, and suggestions</p>
 
       {/* Upload Zone */}
-      <div className="mt-8 border-2 border-dashed border-slate-200 rounded-3xl bg-white p-16 text-center shadow-sm">
+      <div className="mt-8 border-2 border-dashed border-slate-200 dark:border-slate-600 rounded-3xl bg-white dark:bg-slate-800 p-16 text-center shadow-sm">
         {loading ? (
           <div className="py-8">
             <Loader2 className="w-16 h-16 animate-spin mx-auto text-blue-600 mb-4" />
@@ -91,8 +91,8 @@ export default function UploadView({ onUploadComplete }) {
 
       {/* Real-Time Results Section View */}
       {result && (
-        <div ref={resultsRef} className="mt-10 bg-white rounded-3xl p-8 shadow-sm border border-slate-100 scroll-mt-6 animate-fadeIn">
-          <div className="flex justify-between items-start mb-8 pb-6 border-b border-slate-100">
+        <div ref={resultsRef} className="mt-10 bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-sm border border-slate-100 dark:border-slate-700 scroll-mt-6 animate-fadeIn">
+          <div className="flex justify-between items-start mb-8 pb-6 border-b border-slate-100 dark:border-slate-700">
             <div>
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Analysis Engine Verified Log</span>
               <h2 className="text-2xl font-black text-slate-800 mt-1">{result.reportType || "General Medical Report"}</h2>
@@ -108,10 +108,10 @@ export default function UploadView({ onUploadComplete }) {
             <h3 className="text-sm font-extrabold text-slate-800 flex items-center gap-2 mb-4">
               <ListFilter size={16} className="text-blue-600" /> Parsed Clinical Markers
             </h3>
-            <div className="border border-slate-100 rounded-2xl overflow-hidden bg-white">
+            <div className="border border-slate-100 dark:border-slate-700 rounded-2xl overflow-hidden bg-white dark:bg-slate-800">
               <table className="w-full text-xs">
                 <thead>
-                  <tr className="bg-slate-50 border-b border-slate-100 font-bold text-slate-500">
+                  <tr className="bg-slate-50 border-b border-slate-100 dark:border-slate-700 font-bold text-slate-500 dark:text-slate-300">
                     <th className="p-4 text-left">Biomarker / Test Field</th>
                     <th className="p-4 text-left">Your Value</th>
                     <th className="p-4 text-left">Normal Benchmark Range</th>

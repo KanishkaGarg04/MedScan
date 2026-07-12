@@ -69,21 +69,21 @@ export default function DashboardView({ reports = [] }) {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         
         {/* Total Reports */}
-        <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_2px_8px_rgba(0,0,0,0.01)] flex items-center justify-between">
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-[0_2px_8px_rgba(0,0,0,0.01)] flex items-center justify-between">
           <div className="space-y-1">
             <p className="text-xs font-semibold text-slate-400 tracking-normal">Total Dossiers</p>
-            <h2 className="text-3xl font-bold text-slate-900 tracking-tight">
+            <h2 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
               {totalReportsCount < 10 ? `0${totalReportsCount}` : totalReportsCount}
             </h2>
           </div>
-          <div className="w-11 h-11 bg-slate-50 border border-slate-100 rounded-xl flex items-center justify-center text-lg text-slate-500">📋</div>
+          <div className="w-11 h-11 bg-slate-50 border border-slate-100 dark:border-slate-700 rounded-xl flex items-center justify-center text-lg text-slate-500 dark:text-slate-300">📋</div>
         </div>
 
         {/* Injections */}
-        <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_2px_8px_rgba(0,0,0,0.01)] flex items-center justify-between">
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-[0_2px_8px_rgba(0,0,0,0.01)] flex items-center justify-between">
           <div className="space-y-1">
             <p className="text-xs font-semibold text-slate-400 tracking-normal">Injections Extracted</p>
-            <h2 className="text-3xl font-bold text-slate-900 tracking-tight">
+            <h2 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
               {totalInjections < 10 ? `0${totalInjections}` : totalInjections}
             </h2>
           </div>
@@ -91,10 +91,10 @@ export default function DashboardView({ reports = [] }) {
         </div>
 
         {/* Surgeries */}
-        <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_2px_8px_rgba(0,0,0,0.01)] flex items-center justify-between">
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-[0_2px_8px_rgba(0,0,0,0.01)] flex items-center justify-between">
           <div className="space-y-1">
             <p className="text-xs font-semibold text-slate-400 tracking-normal">Surgical Records</p>
-            <h2 className="text-3xl font-bold text-slate-900 tracking-tight">
+            <h2 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
               {totalSurgeries < 10 ? `0${totalSurgeries}` : totalSurgeries}
             </h2>
           </div>
@@ -107,9 +107,9 @@ export default function DashboardView({ reports = [] }) {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         
         {/* Trend Area Chart Container */}
-        <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_2px_8px_rgba(0,0,0,0.01)] lg:col-span-2 space-y-4">
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-[0_2px_8px_rgba(0,0,0,0.01)] lg:col-span-2 space-y-4">
           <div>
-            <h4 className="font-bold text-base text-slate-900 tracking-tight">Prescription Trajectory Engine</h4>
+            <h4 className="font-bold text-base text-slate-900 dark:text-white tracking-tight">Prescription Trajectory Engine</h4>
             <p className="text-slate-400 text-xs font-normal">Timeline distribution across calculated aggregate markers</p>
           </div>
 
@@ -132,7 +132,7 @@ export default function DashboardView({ reports = [] }) {
         </div>
 
         {/* Minimal Health Score Gauge */}
-        <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_2px_8px_rgba(0,0,0,0.01)] flex flex-col items-center justify-center">
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-[0_2px_8px_rgba(0,0,0,0.01)] flex flex-col items-center justify-center">
           <p className="text-xs font-semibold text-slate-400 self-start">Condition Baseline</p>
           
           <div className="relative flex items-center justify-center my-3">
@@ -152,7 +152,7 @@ export default function DashboardView({ reports = [] }) {
               />
             </svg>
             <div className="absolute text-center">
-              <span className="text-2xl font-bold text-slate-900 tracking-tighter">{averageHealthIndex}%</span>
+              <span className="text-2xl font-bold text-slate-900 dark:text-white tracking-tighter">{averageHealthIndex}%</span>
             </div>
           </div>
           <span className={`text-xs font-semibold px-3 py-1 rounded-md ${severity.bg} border ${severity.border} ${severity.text}`}>
@@ -165,28 +165,28 @@ export default function DashboardView({ reports = [] }) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         
         {/* Dynamic Insight Summary Card */}
-        <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_2px_8px_rgba(0,0,0,0.01)] space-y-3">
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-[0_2px_8px_rgba(0,0,0,0.01)] space-y-3">
           <div className="flex items-center gap-2 border-b border-slate-50 pb-2">
             <span className="text-sm">✨</span>
-            <h3 className="font-bold text-sm text-slate-900 tracking-normal">AI Synthesis Summary</h3>
+            <h3 className="font-bold text-sm text-slate-900 dark:text-white tracking-normal">AI Synthesis Summary</h3>
           </div>
-          <p className="text-[13px] text-slate-500 font-normal leading-relaxed">
+          <p className="text-[13px] text-slate-500 dark:text-slate-300 font-normal leading-relaxed">
             {insights.summary || "Awaiting file upload execution parameters to systematically populate summary indices."}
           </p>
         </div>
 
         {/* Dynamic Color-Accented Disease Risk Explainer Block */}
-        <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_2px_8px_rgba(0,0,0,0.01)] space-y-3">
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-[0_2px_8px_rgba(0,0,0,0.01)] space-y-3">
           <div className="flex items-center gap-2 border-b border-slate-50 pb-2">
             <span className="text-sm">🔍</span>
-            <h3 className="font-bold text-sm text-slate-900 tracking-normal">Risk Profile Vector</h3>
+            <h3 className="font-bold text-sm text-slate-900 dark:text-white tracking-normal">Risk Profile Vector</h3>
           </div>
           <div className={`p-4 rounded-xl border ${severity.bg} ${severity.border} space-y-1`}>
             <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Predicted Tendency:</p>
             <p className={`text-base font-bold tracking-tight ${severity.text}`}>
               {insights.diseaseRiskPrediction || "Awaiting complete diagnostic data stream..."}
             </p>
-            <p className="text-[11px] text-slate-400 font-normal pt-2 border-t border-slate-100/50 mt-2">
+            <p className="text-[11px] text-slate-400 font-normal pt-2 border-t border-slate-100 dark:border-slate-700/50 mt-2">
               *Calculated via zero-shot cross-parameter synthesis. This is an explainability vector, not a diagnosis.
             </p>
           </div>
@@ -198,9 +198,9 @@ export default function DashboardView({ reports = [] }) {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         
         {/* Minimalist Recommendation Matrix */}
-        <div className="lg:col-span-2 bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_2px_8px_rgba(0,0,0,0.01)] space-y-5">
+        <div className="lg:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-[0_2px_8px_rgba(0,0,0,0.01)] space-y-5">
           <div>
-            <h3 className="font-bold text-base text-slate-900 tracking-tight">Tailored Optimization Directives</h3>
+            <h3 className="font-bold text-base text-slate-900 dark:text-white tracking-tight">Tailored Optimization Directives</h3>
             <p className="text-xs text-slate-400 font-normal">Personalized clinical changes built directly from parsed biomarkers</p>
           </div>
           
@@ -212,9 +212,9 @@ export default function DashboardView({ reports = [] }) {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pl-1">
               {insights.dietarySuggestions && insights.dietarySuggestions.length > 0 ? (
                 insights.dietarySuggestions.map((item, idx) => (
-                  <div key={idx} className="bg-slate-50/50 p-3.5 rounded-xl border border-slate-100/40 text-[13px] space-y-0.5">
+                  <div key={idx} className="bg-slate-50/50 p-3.5 rounded-xl border border-slate-100 dark:border-slate-700/40 text-[13px] space-y-0.5">
                     <span className="font-bold text-slate-800 block">{item.split(':')[0]}</span>
-                    <span className="text-slate-500 font-normal block leading-normal">{item.split(':')[1] || "Incorporate cleanly into morning routines."}</span>
+                    <span className="text-slate-500 dark:text-slate-300 font-normal block leading-normal">{item.split(':')[1] || "Incorporate cleanly into morning routines."}</span>
                   </div>
                 ))
               ) : (
@@ -231,9 +231,9 @@ export default function DashboardView({ reports = [] }) {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pl-1">
               {insights.whatToAvoid && insights.whatToAvoid.length > 0 ? (
                 insights.whatToAvoid.map((item, idx) => (
-                  <div key={idx} className="bg-slate-50/50 p-3.5 rounded-xl border border-slate-100/40 text-[13px] space-y-0.5">
+                  <div key={idx} className="bg-slate-50/50 p-3.5 rounded-xl border border-slate-100 dark:border-slate-700/40 text-[13px] space-y-0.5">
                     <span className="font-bold text-slate-800 block">{item.split(':')[0]}</span>
-                    <span className="text-slate-500 font-normal block leading-normal">{item.split(':')[1] || "Avoid or restrict from standard profiles."}</span>
+                    <span className="text-slate-500 dark:text-slate-300 font-normal block leading-normal">{item.split(':')[1] || "Avoid or restrict from standard profiles."}</span>
                   </div>
                 ))
               ) : (
@@ -250,9 +250,9 @@ export default function DashboardView({ reports = [] }) {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pl-1">
               {insights.lifestyleChanges && insights.lifestyleChanges.length > 0 ? (
                 insights.lifestyleChanges.map((item, idx) => (
-                  <div key={idx} className="bg-slate-50/50 p-3.5 rounded-xl border border-slate-100/40 text-[13px] space-y-0.5">
+                  <div key={idx} className="bg-slate-50/50 p-3.5 rounded-xl border border-slate-100 dark:border-slate-700/40 text-[13px] space-y-0.5">
                     <span className="font-bold text-slate-800 block">{item.split(':')[0]}</span>
-                    <span className="text-slate-500 font-normal block leading-normal">{item.split(':')[1] || "Adopt to protect metabolic baselines."}</span>
+                    <span className="text-slate-500 dark:text-slate-300 font-normal block leading-normal">{item.split(':')[1] || "Adopt to protect metabolic baselines."}</span>
                   </div>
                 ))
               ) : (
@@ -264,22 +264,22 @@ export default function DashboardView({ reports = [] }) {
         </div>
 
         {/* Right Sidebar: Minimal Medication Card Stack */}
-        <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_2px_8px_rgba(0,0,0,0.01)] space-y-4">
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-[0_2px_8px_rgba(0,0,0,0.01)] space-y-4">
           <div className="flex items-center gap-2 border-b border-slate-50 pb-2">
             <span className="text-sm">💊</span>
-            <h4 className="font-bold text-sm text-slate-900 tracking-normal">Active Medication Support</h4>
+            <h4 className="font-bold text-sm text-slate-900 dark:text-white tracking-normal">Active Medication Support</h4>
           </div>
 
           <div className="space-y-2.5">
             {insights.medications && insights.medications.length > 0 ? (
               insights.medications.map((pill, idx) => (
-                <div key={idx} className="border border-slate-100 bg-slate-50/20 p-3.5 rounded-xl space-y-1 hover:border-slate-200 transition-all">
+                <div key={idx} className="border border-slate-100 dark:border-slate-700 bg-slate-50/20 p-3.5 rounded-xl space-y-1 hover:border-slate-200 dark:border-slate-600 transition-all">
                   <div className="flex justify-between items-center text-[10px] font-semibold text-slate-400 tracking-normal">
                     <span>Compound 0{idx + 1}</span>
                     <span className="text-blue-600 font-bold">{pill.name}</span>
                   </div>
                   <div className="text-base font-bold text-slate-800 tracking-tight">{pill.dose}</div>
-                  <div className="text-xs text-slate-500 font-normal leading-tight mt-0.5">{pill.instruction}</div>
+                  <div className="text-xs text-slate-500 dark:text-slate-300 font-normal leading-tight mt-0.5">{pill.instruction}</div>
                 </div>
               ))
             ) : (

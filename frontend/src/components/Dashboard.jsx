@@ -5,7 +5,9 @@ import {
   Clock,
   User,
   Bot,
-  LogOut
+  LogOut,
+  Moon,
+  Sun,
 } from "lucide-react";
 
 import DashboardView from "./DashboardView";
@@ -15,154 +17,235 @@ import ChatbotView from "./ChatbotView";
 import ProfileView from "./ProfileView";
 
 export default function Dashboard() {
+  const [activeTab, setActiveTab] = useState("home");
 
-   const [activeTab, setActiveTab] = useState('home');
+  const [darkMode, setDarkMode] = useState(
+    () => localStorage.getItem("theme") === "dark"
+  );
+
   const [reports, setReports] = useState([]);
-  const [user, setUser] = useState(null);
+  const [selectedReport, setSelectedReport] = useState(null);
 
-useEffect(() => {
-    const savedUser = localStorage.getItem("user");
+  const [user, setUser] = useState(() => {
+    const saved = localStorage.getItem("user");
+    return saved ? JSON.parse(saved) : null;
+  });
 
-    if (savedUser) {
-        setUser(JSON.parse(savedUser));
-    }
+  // ================= Fetch Reports =================
 
-    fetchReports();
-}, []);
-  
-
-  // Fetch real database logs from your backend setup
   const fetchReports = async () => {
     try {
       const token = localStorage.getItem("token");
 
-const res = await axios.get(
-    "http://localhost:5000/api/reports/history",
-    {
-        headers: {
+      const res = await axios.get(
+        "http://localhost:5000/api/reports/history",
+        {
+          headers: {
             Authorization: token,
-        },
-    }
-);
+          },
+        }
+      );
+
       setReports(res.data.data || res.data || []);
     } catch (err) {
-      console.error("Failed fetching database history collection records:", err);
+      console.error(
+        "Failed fetching database history collection records:",
+        err
+      );
     }
   };
 
-  
+  // ================= Initial Load =================
+
+  useEffect(() => {
+    fetchReports();
+
+    const syncUser = () => {
+      const saved = localStorage.getItem("user");
+
+      if (saved) {
+        setUser(JSON.parse(saved));
+      }
+    };
+
+    window.addEventListener("storage", syncUser);
+
+    return () => {
+      window.removeEventListener("storage", syncUser);
+    };
+  }, []);
+
+  // ================= Dark Mode =================
+
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  }, [darkMode]);
+
+  // ================= Logout =================
 
   const handleLogout = () => {
-     localStorage.removeItem("token");
+    localStorage.removeItem("token");
     localStorage.removeItem("user");
 
     window.location.href = "/login";
   };
 
   return (
-    <div className="flex min-h-screen bg-[#f7fafd] text-slate-700 font-sans antialiased tracking-tight">
-      
-      {/* ================= FIXED SIDEBAR NAV PANEL (MEDIUM SIZE W-72) ================= */}
-      <aside className="w-72 bg-white border-r border-slate-100 h-screen fixed flex flex-col justify-between p-6 z-30 shrink-0">
-        
-        <div className="space-y-8">
-          {/* Aesthetic Brand Logo Header Frame */}
-          <div className="flex items-center gap-3.5 px-2 py-1">
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-r from-teal-500 to-blue-600 flex items-center justify-center text-white shadow-md shadow-blue-500/10 shrink-0">
-              {/* Thin Line ECG / Pulse Icon exactly matching image concept */}
-              <svg className="w-6 h-6 stroke-white fill-none" viewBox="0 0 24 24" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-              </svg>
-            </div>
-            <div className="space-y-0.5">
-              <h1 className="text-xl font-bold tracking-tight text-slate-900 leading-none">MedScan</h1>
-              <p className="text-xs font-semibold text-slate-400 mt-0.5 tracking-wide">Report Analyzer</p>
-            </div>
+  <div className="flex min-h-screen bg-[#f7fafd] dark:bg-slate-900 text-slate-700 dark:text-white">
+
+    {/* Sidebar */}
+    <aside className="w-72 bg-white dark:bg-slate-800 border-r border-slate-100 dark:border-slate-700 h-screen fixed flex flex-col justify-between p-6">
+
+      <div>
+
+        {/* Logo */}
+        <div className="flex items-center gap-3 mb-10">
+          <div className="w-11 h-11 rounded-xl bg-gradient-to-r from-teal-500 to-blue-600 flex items-center justify-center text-white">
+            <svg
+              className="w-6 h-6 stroke-white fill-none"
+              viewBox="0 0 24 24"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+            </svg>
           </div>
 
-          {/* Navigation Matrix — Reconstructed layout with image colors */}
-          <nav className="space-y-1.5">
-            {[
-              { id: 'home', label: 'Home', icon: Home },
-              { id: 'history', label: 'History', icon: Clock },
-              { id: 'profile', label: 'Profile', icon: User },
-              { id: 'chatbot', label: 'AI Consultant', icon: Bot },
-            ].map(({ id, label, icon: Icon }) => {
-              const isActive = activeTab === id;
-              return (
-                <button
-                  key={id}
-                  onClick={() => setActiveTab(id)}
-                  className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-xl text-[15px] font-bold transition-all duration-200 ${
-                    isActive
-                      ? 'bg-gradient-to-r from-teal-500 to-blue-600 text-white shadow-md shadow-blue-500/10'
-                      : 'text-slate-400 hover:text-slate-800 hover:bg-slate-50/80'
-                  }`}
-                >
-                  <Icon 
-                    size={20} 
-                    strokeWidth={isActive ? 2.5 : 2} 
-                    className={isActive ? 'text-white' : 'text-slate-400'} 
-                  />
-                  <span>{label}</span>
-                </button>
-              );
-            })}
-          </nav>
+          <div>
+            <h1 className="text-xl font-bold">MedScan</h1>
+            <p className="text-xs text-slate-400">Report Analyzer</p>
+          </div>
         </div>
 
-        {/* User Profile Footer section */}
-        <div className="space-y-4 border-t border-slate-100 pt-5">
-          <div className="flex items-center gap-3.5 px-2">
-            <div className="w-11 h-11 rounded-xl bg-slate-100 text-slate-600 border border-slate-200/60 flex items-center justify-center font-bold text-base tracking-tight shrink-0">
+        {/* Navigation */}
+        <nav className="space-y-2">
+
+          {[
+            { id: "home", label: "Home", icon: Home },
+            { id: "history", label: "History", icon: Clock },
+            { id: "profile", label: "Profile", icon: User },
+            { id: "chatbot", label: "AI Consultant", icon: Bot },
+          ].map(({ id, label, icon: Icon }) => {
+
+            const active = activeTab === id;
+
+            return (
+              <button
+                key={id}
+                onClick={() => setActiveTab(id)}
+                className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl transition
+                ${
+                  active
+                    ? "bg-gradient-to-r from-teal-500 to-blue-600 text-white"
+                    : "hover:bg-slate-100 dark:hover:bg-slate-700"
+                }`}
+              >
+                <Icon size={20} />
+                {label}
+              </button>
+            );
+          })}
+
+        </nav>
+
+      </div>
+
+      {/* Bottom */}
+      <div className="space-y-4 border-t pt-5 dark:border-slate-700">
+
+        {/* Profile */}
+
+        <div
+          onClick={() => setActiveTab("profile")}
+          className="flex items-center gap-3 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700 p-2 rounded-xl"
+        >
+
+          {user?.profilePic ? (
+            <img
+              src={user.profilePic}
+              alt=""
+              className="w-11 h-11 rounded-xl object-cover"
+            />
+          ) : (
+            <div className="w-11 h-11 rounded-xl bg-gradient-to-r from-teal-500 to-blue-600 text-white flex items-center justify-center font-bold">
               {user?.name
-             ?.split(" ")
-            .map(word => word[0])
-            .join("")
-           .toUpperCase()}
-            </div>
-            <div className="space-y-0.5 truncate">
-              <h4 className="text-[14.5px] font-bold text-slate-800 leading-none truncate"> {user?.name}</h4>
-              <p className="text-xs font-semibold text-slate-400 mt-0.5">Patient Profile</p>
-            </div>
-          </div>
-
-          <button 
-            onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-[13px] text-slate-400 hover:text-rose-600 hover:bg-rose-50/40 transition-all tracking-normal"
-          >
-            <LogOut size={16} strokeWidth={2.2} />
-            <span>Logout </span>
-          </button>
-        </div>
-
-      </aside>
-
-      {/* ================= MAIN CONTENT VIEWPORT CONTAINER ================= */}
-      <main className="flex-1 ml-72 p-10 min-h-screen overflow-y-auto">
-        <div className="max-w-5xl mx-auto">
-          
-          {/* Main Dashboard Route View layout */}
-          {activeTab === 'home' && (
-            <div className="space-y-10">
-              
-              {/* Dynamic File Uploader Container Subview */}
-              <UploadView onUploadComplete={fetchReports} />
-              
-              {/* Reports Dashboard Grid View */}
-              <DashboardView reports={reports} />
+                ?.split(" ")
+                .map((w) => w[0])
+                .join("")
+                .toUpperCase()}
             </div>
           )}
-          
-          {/* Alternate Navigation Tab Panels */}
-          {activeTab === 'history' && <HistoryView reports={reports} />}
-          {activeTab === 'profile' && <ProfileView reports={reports} />}
-          {activeTab === 'chatbot' && <ChatbotView />}
+
+          <div>
+            <h4 className="font-semibold">{user?.name}</h4>
+            <p className="text-xs text-slate-400">View Profile</p>
+          </div>
 
         </div>
-      </main>
-      
-    </div>
-  );
 
+        {/* Dark Mode */}
+
+        <button
+          onClick={() => setDarkMode(!darkMode)}
+          className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700"
+        >
+          {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+          {darkMode ? "Light Mode" : "Dark Mode"}
+        </button>
+
+        {/* Logout */}
+
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20"
+        >
+          <LogOut size={18} />
+          Logout
+        </button>
+
+      </div>
+
+    </aside>
+
+    {/* Main Content */}
+
+    <main className="flex-1 ml-72 p-10">
+
+      {activeTab === "home" && (
+        <div className="space-y-10">
+          <UploadView onUploadComplete={fetchReports} />
+          <DashboardView reports={reports} />
+        </div>
+      )}
+
+      {activeTab === "history" && (
+        <HistoryView
+          reports={reports}
+          setSelectedReport={setSelectedReport}
+          setActiveTab={setActiveTab}
+        />
+      )}
+
+      {activeTab === "profile" && (
+        <ProfileView reports={reports} />
+      )}
+
+      {activeTab === "chatbot" && (
+        <ChatbotView
+          reportContext={selectedReport}
+          onClearContext={() => setSelectedReport(null)}
+        />
+      )}
+
+    </main>
+
+  </div>
+);
 }

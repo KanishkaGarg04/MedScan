@@ -59,7 +59,12 @@ export default function ProfileView({ reports = [] }) {
 
       localStorage.setItem("user", JSON.stringify(user));
 
-      window.location.reload();
+      const updatedUser = {
+  ...user,
+  profilePic: res.data.profilePic,
+};
+
+localStorage.setItem("user", JSON.stringify(updatedUser));
     } catch (err) {
       console.log(err);
       alert("Upload failed");
@@ -77,7 +82,7 @@ export default function ProfileView({ reports = [] }) {
 
       {/* Header Card */}
 
-      <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-8">
+      <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 p-8">
 
         <div className="flex flex-col items-center">
 
@@ -118,11 +123,11 @@ export default function ProfileView({ reports = [] }) {
 
           </div>
 
-          <h1 className="mt-5 text-3xl font-bold text-slate-900">
+          <h1 className="mt-5 text-3xl font-bold text-slate-900 dark:text-white">
             {user?.name}
           </h1>
 
-          <p className="text-slate-500 mt-1">
+          <p className="text-slate-500 dark:text-slate-300 mt-1">
             {user?.email}
           </p>
 
@@ -140,7 +145,7 @@ export default function ProfileView({ reports = [] }) {
       <div className="mt-8 grid md:grid-cols-2 gap-6">
                 {/* Account Information */}
 
-        <div className="bg-white rounded-2xl border border-slate-100 p-6">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 p-6">
 
           <h2 className="text-lg font-bold mb-5">
             Account Information
@@ -149,7 +154,7 @@ export default function ProfileView({ reports = [] }) {
           <div className="space-y-5">
 
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3 text-slate-500">
+              <div className="flex items-center gap-3 text-slate-500 dark:text-slate-300">
                 <User size={18} />
                 <span>Name</span>
               </div>
@@ -160,7 +165,7 @@ export default function ProfileView({ reports = [] }) {
             </div>
 
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3 text-slate-500">
+              <div className="flex items-center gap-3 text-slate-500 dark:text-slate-300">
                 <Mail size={18} />
                 <span>Email</span>
               </div>
@@ -171,7 +176,7 @@ export default function ProfileView({ reports = [] }) {
             </div>
 
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3 text-slate-500">
+              <div className="flex items-center gap-3 text-slate-500 dark:text-slate-300">
                 <CalendarDays size={18} />
                 <span>Member Since</span>
               </div>
@@ -187,7 +192,7 @@ export default function ProfileView({ reports = [] }) {
 
         {/* Statistics */}
 
-        <div className="bg-white rounded-2xl border border-slate-100 p-6">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 p-6">
 
           <h2 className="text-lg font-bold mb-5">
             Statistics
@@ -197,7 +202,7 @@ export default function ProfileView({ reports = [] }) {
 
             <div className="flex items-center justify-between">
 
-              <div className="flex items-center gap-3 text-slate-500">
+              <div className="flex items-center gap-3 text-slate-500 dark:text-slate-300">
                 <FileBarChart size={18} />
                 <span>Reports Analyzed</span>
               </div>
@@ -210,7 +215,7 @@ export default function ProfileView({ reports = [] }) {
 
             <div className="flex items-center justify-between">
 
-              <div className="flex items-center gap-3 text-slate-500">
+              <div className="flex items-center gap-3 text-slate-500 dark:text-slate-300">
                 <ShieldCheck size={18} />
                 <span>Account Status</span>
               </div>

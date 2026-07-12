@@ -23,7 +23,7 @@ export default function Register() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-lg backdrop-blur-xl bg-white/70 border border-white/50 p-8 md:p-12 rounded-[24px] shadow-2xl">
+      <div className="w-full max-w-lg backdrop-blur-xl bg-white dark:bg-slate-800/70 border border-white/50 p-8 md:p-12 rounded-[24px] shadow-2xl">
         
         {/* Logo Section */}
         <div className="flex items-center gap-4 mb-8">
@@ -31,24 +31,24 @@ export default function Register() {
             <Activity className="text-white" size={36} strokeWidth={2.5} />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-slate-900">MedScan</h1>
-            <p className="text-slate-500 font-medium">Report Analyzer</p>
+            <h1 className="text-3xl font-bold text-slate-900 dark:text-white">MedScan</h1>
+            <p className="text-slate-500 dark:text-slate-300 font-medium">Report Analyzer</p>
           </div>
         </div>
 
-        <h2 className="text-2xl font-bold text-slate-900 mb-2">Create Account</h2>
-        <p className="text-slate-500 mb-8">Join MedScan to start analyzing your health data.</p>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Create Account</h2>
+        <p className="text-slate-500 dark:text-slate-300 mb-8">Join MedScan to start analyzing your health data.</p>
 
         <form onSubmit={handleRegister} className="space-y-4">
           <input
-            className="w-full p-4 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500 outline-none"
+            className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-600 focus:ring-2 focus:ring-teal-500 outline-none"
             placeholder="Full Name"
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             required
           />
           <input
             type="email"
-            className="w-full p-4 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500 outline-none"
+            className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-600 focus:ring-2 focus:ring-teal-500 outline-none"
             placeholder="Email Address"
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             required
@@ -57,7 +57,7 @@ export default function Register() {
           <div className="relative">
             <input
               type={showPass ? "text" : "password"}
-              className="w-full p-4 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500 outline-none"
+              className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-600 focus:ring-2 focus:ring-teal-500 outline-none"
               placeholder="Password"
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               required

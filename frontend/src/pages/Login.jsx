@@ -42,7 +42,7 @@ export default function Login() {
           
           <div className="grid grid-cols-3 gap-4">
             {[ {icon: FileText, label: "OCR Extraction"}, {icon: BrainCircuit, label: "AI Insights"}, {icon: ShieldCheck, label: "Secure History"} ].map((item, i) => (
-              <div key={i} className="bg-white/50 p-4 rounded-2xl shadow-sm border border-white/50 backdrop-blur-sm flex flex-col items-center text-center">
+              <div key={i} className="bg-white dark:bg-slate-800/50 p-4 rounded-2xl shadow-sm border border-white/50 backdrop-blur-sm flex flex-col items-center text-center">
                 <item.icon className="text-teal-500 mb-2" size={24} />
                 <span className="text-xs font-medium text-slate-700">{item.label}</span>
               </div>
@@ -53,16 +53,16 @@ export default function Login() {
         {/* Right Side: Glassmorphism Login Card */}
         <form
           onSubmit={handleLogin}
-          className="backdrop-blur-xl bg-white/70 border border-white/50 p-8 md:p-12 rounded-[24px] shadow-2xl w-full"
+          className="backdrop-blur-xl bg-white dark:bg-slate-800/70 border border-white/50 p-8 md:p-12 rounded-[24px] shadow-2xl w-full"
         >
-          <h2 className="text-3xl font-bold text-slate-900 mb-2">Welcome Back</h2>
-          <p className="text-slate-500 mb-8">Enter your credentials to access your dashboard.</p>
+          <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">Welcome Back</h2>
+          <p className="text-slate-500 dark:text-slate-300 mb-8">Enter your credentials to access your dashboard.</p>
           
           <div className="space-y-4">
             <input
               type="email"
               placeholder="Email Address"
-              className="w-full p-4 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500 outline-none transition-all"
+              className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-600 focus:ring-2 focus:ring-teal-500 outline-none transition-all"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -72,7 +72,7 @@ export default function Login() {
               <input
                 type={showPass ? "text" : "password"}
                 placeholder="Password"
-                className="w-full p-4 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500 outline-none transition-all"
+                className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-600 focus:ring-2 focus:ring-teal-500 outline-none transition-all"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
